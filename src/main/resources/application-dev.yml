@@ -1,0 +1,16 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/postgres?currentSchema=watermelon_db
+    username: postgres
+    password: postgres
+  jpa:
+    show-sql: true
+    open-in-view: false
+    properties:
+        hibernate:
+            format_sql: false
+            dialect: org.hibernate.dialect.PostgreSQLDialect
+            default_schema: watermelon_db
+    hibernate:
+      ddl-auto: create-drop
+

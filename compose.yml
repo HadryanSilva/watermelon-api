@@ -1,0 +1,31 @@
+services:
+  postgres:
+    image: postgres:13-alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+    ports:
+      - "5432:5432"
+    networks:
+      - app-network
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  watermelon-api:
+    container_name: watermelon-api
+    build:
+        context: .
+        dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    networks:
+        - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+    postgres-data:
