@@ -11,6 +11,7 @@ public interface PurchaseMapper {
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "date", ignore = true)
+    @Mapping(target = "account", ignore = true)
     Purchase requestToModel(PurchaseRequest request);
 
     PurchaseResponse modelToResponse(Purchase purchase);

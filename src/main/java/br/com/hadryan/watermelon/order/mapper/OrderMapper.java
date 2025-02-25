@@ -10,6 +10,8 @@ import org.mapstruct.Mapping;
 public interface OrderMapper {
 
     @Mapping(target = "id", ignore = true)
+    @Mapping(target = "customer", ignore = true)
+    @Mapping(target = "account", ignore = true)
     Order requestToModel(OrderRequest request);
 
     OrderResponse modelToResponse(Order order);
