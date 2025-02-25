@@ -1,6 +1,7 @@
 package br.com.hadryan.watermelon.order.model;
 
 import br.com.hadryan.watermelon.customer.model.Customer;
+import br.com.hadryan.watermelon.finance.model.Account;
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -30,5 +31,8 @@ public class Order {
 
     @OneToOne(fetch = FetchType.LAZY)
     private Customer customer;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Account account;
 
 }

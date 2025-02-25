@@ -1,5 +1,6 @@
 package br.com.hadryan.watermelon.purchase.model;
 
+import br.com.hadryan.watermelon.finance.model.Account;
 import jakarta.persistence.*;
 import jdk.jfr.Timestamp;
 import lombok.EqualsAndHashCode;
@@ -30,5 +31,8 @@ public class Purchase {
 
     @Timestamp
     private LocalDateTime date;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Account account;
 
 }

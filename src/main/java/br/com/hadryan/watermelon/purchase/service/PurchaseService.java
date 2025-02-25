@@ -1,6 +1,8 @@
 package br.com.hadryan.watermelon.purchase.service;
 
 import br.com.hadryan.watermelon.exception.NotFoundException;
+import br.com.hadryan.watermelon.finance.model.Account;
+import br.com.hadryan.watermelon.finance.repository.AccountRepository;
 import br.com.hadryan.watermelon.product.repository.ProductRepository;
 import br.com.hadryan.watermelon.purchase.mapper.PurchaseItemMapper;
 import br.com.hadryan.watermelon.purchase.mapper.PurchaseMapper;
@@ -29,6 +31,7 @@ public class PurchaseService {
     private final PurchaseMapper purchaseMapper;
     private final PurchaseItemMapper purchaseItemMapper;
     private final ProductRepository productRepository;
+    private final AccountRepository accountRepository;
 
     @Transactional
     public List<PurchaseResponse> findAll(int page, int size) {
@@ -52,9 +55,16 @@ public class PurchaseService {
         log.info("Saving purchase");
         var purchaseToSave = purchaseMapper.requestToModel(request);
         purchaseToSave.setItems(saveItems(request.getItems()));
+        purchaseToSave.setAccount(validateAccount(request.getAccountId()));
         var savedPurchase = purchaseRepository.save(purchaseToSave);
         updateProductStock(request.getItems());
+        updateAccountBalance(request);
         return purchaseMapper.modelToResponse(savedPurchase);
+    }
+
+    private Account validateAccount(Long accountId) {
+        return accountRepository.findById(accountId)
+                .orElseThrow(() -> new NotFoundException("Account not found"));
     }
 
     private List<PurchaseItem> saveItems(List<PurchaseItemRequest> products) {
@@ -80,6 +90,14 @@ public class PurchaseService {
             product.setStock(product.getStock() + item.getQuantity());
             productRepository.save(product);
         });
+    }
+
+    private void updateAccountBalance(PurchaseRequest request) {
+        log.info("Updating account balance");
+        var account = validateAccount(request.getAccountId());
+        account.setExpenses(account.getExpenses().add(request.getTotalValue()));
+        account.setBalance(account.getBalance().subtract(request.getTotalValue()));
+        accountRepository.save(account);
     }
 
 

@@ -18,4 +18,6 @@ public class PurchaseRequest {
     @NotBlank
     private BigDecimal totalValue;
 
+    private Long accountId;
+
 }

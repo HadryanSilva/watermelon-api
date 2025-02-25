@@ -1,6 +1,5 @@
 package br.com.hadryan.watermelon.order.mapper.request;
 
-import br.com.hadryan.watermelon.customer.model.Customer;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
@@ -24,6 +23,9 @@ public class OrderRequest {
     private Double totalWeight;
 
     @NotNull
-    private Customer customer;
+    private Long customerId;
+
+    @NotNull
+    private Long accountId;
 
 }
