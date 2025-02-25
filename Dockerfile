@@ -8,7 +8,7 @@ COPY src ./src
 
 RUN gradle clean build
 
-FROM eclipse-temurin:21-alpine
+FROM openjdk:21-jre-slim
 
 WORKDIR /app
 
